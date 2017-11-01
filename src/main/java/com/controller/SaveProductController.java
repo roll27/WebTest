@@ -1,9 +1,14 @@
-package com.contorller;
+package com.controller;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 
 import com.form.ProductForm;
 import com.model.Product;
@@ -13,10 +18,12 @@ import com.validator.ProductValidator;
  * @author 作者：roll27
  * @version 创建时间：2017年11月1日下午2:54:19 类说明
  */
-public class SaveProductController implements Contorller {
+public class SaveProductController implements Controller {
+	
+	private static final Log logger = LogFactory.getLog(InputProductController.class);
 
 	@Override
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		ProductForm productForm = new ProductForm();
 		productForm.setName(request.getParameter("name"));
@@ -35,14 +42,10 @@ public class SaveProductController implements Contorller {
 				;
 			} catch (NumberFormatException e) {
 			}
-			request.setAttribute("product", product);
-			return "/WEB-INF/jsp/ProductDetails.jsp";
+			return new ModelAndView("/WEB-INF/jsp/ProductDetails.jsp","product", product);
 
 		} else {
-			request.setAttribute("errors", errors);
-			System.out.println(errors);
-			request.setAttribute("form", productForm);
-			return "/WEB-INF/jsp/ProductForm.jsp";
+			return new ModelAndView("/WEB-INF/jsp/ProductForm.jsp","errors", errors);
 		}
 	}
 
