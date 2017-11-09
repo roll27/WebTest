@@ -1,6 +1,7 @@
 package com.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Product implements Serializable {
 
@@ -13,6 +14,7 @@ public class Product implements Serializable {
 	private String name;
 	private String description;
 	private float price;
+	private Date productionDate;
 
 	public long getId() {
 		return id;
@@ -43,6 +45,14 @@ public class Product implements Serializable {
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public Date getProductionDate() {
+		return productionDate;
+	}
+
+	public void setProductionDate(Date productionDate) {
+		this.productionDate = productionDate;
 	}
 
 }

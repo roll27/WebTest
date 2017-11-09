@@ -1,16 +1,22 @@
 package com.validator;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
 import com.form.ProductForm;
+import com.model.Product;
 
 /**
  * @author 作者：roll27
  * @version 创建时间：2017年11月1日下午3:18:27
  * 类说明
  */
-public class ProductValidator {
+public class ProductValidator implements Validator{
 	
 	public List<String> validate(ProductForm productForm){
 		List<String> errors = new ArrayList<String>();
@@ -30,5 +36,31 @@ public class ProductValidator {
 			}
 		}
 		return errors;
+	}
+
+	@Override
+	public boolean supports(Class<?> clazz) {
+		// TODO Auto-generated method stub
+		return Product.class.isAssignableFrom(clazz);
+	}
+
+	@Override
+	public void validate(Object target, Errors errors) {
+		// TODO Auto-generated method stub
+		Product product = (Product)target;
+		ValidationUtils.rejectIfEmpty(errors, "name", "productname.required");
+		ValidationUtils.rejectIfEmpty(errors, "price", "price.required");
+		ValidationUtils.rejectIfEmpty(errors, "productionDate", "productiondate.required");
+		Float price = product.getPrice();
+		if(price != null && price < 0 ){
+			errors.rejectValue("price", "price.negative");
+		}
+		Date productionDate = product.getProductionDate();
+		if(productionDate != null){
+			if(productionDate.after(new Date())){
+				System.out.println("salah lagi");
+				errors.rejectValue("productionDate", "productiondate.invalid");
+			}
+		}
 	}
 }

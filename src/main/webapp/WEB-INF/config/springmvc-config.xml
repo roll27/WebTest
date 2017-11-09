@@ -11,7 +11,7 @@
 	   	http://www.springframework.org/schema/context/spring-context.xsd">
 	<context:component-scan base-package="com.controller" />
 	<context:component-scan base-package="com.business" />
-	<mvc:annotation-driven conversion-service="conversionService"/>
+	<mvc:annotation-driven conversion-service="conversionService" />
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/*.html" location="/" />
 
@@ -22,13 +22,18 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	<bean id="conversionService"
-		class="org.springframework.context.support.ConversionServiceFactoryBean">
-		<property name="converters">
-			<list>
-				<bean class="com.converter.StringToDateConverter">
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+			<set>
+				<bean class="com.formatter.DateFormatter">
 					<constructor-arg type="java.lang.String" value="MM-dd-yyyy" />
 				</bean>
-			</list>
+			</set>
 		</property>
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/resource/message"/>
+
 	</bean>
 </beans>
