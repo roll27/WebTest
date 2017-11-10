@@ -3,6 +3,9 @@ package com.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
 public class Product implements Serializable {
 
 	/**
@@ -11,9 +14,11 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 2209277210528562112L;
 
 	private long id;
+	@Size(min=1 , max=10)
 	private String name;
 	private String description;
 	private float price;
+	@Past
 	private Date productionDate;
 
 	public long getId() {

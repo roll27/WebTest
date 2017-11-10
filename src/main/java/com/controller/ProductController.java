@@ -1,5 +1,7 @@
 package com.controller;
 
+import javax.validation.Valid;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.business.ProductService;
 import com.model.Product;
-import com.validator.ProductValidator;
 
 /**
  * @author 作者：roll27
@@ -22,7 +23,7 @@ import com.validator.ProductValidator;
  */
 
 @Controller
-public class ProductController {
+public class ProductController{
 	private static final Log logger = LogFactory.getLog(ProductController.class);
 
 	@Autowired
@@ -36,11 +37,9 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/product_save")
-	public String saveProduct(@ModelAttribute Product product, BindingResult bindingResult, Model model,
+	public String saveProduct(@Valid @ModelAttribute Product product, BindingResult bindingResult, Model model,
 			RedirectAttributes redirectAttributes) {
 		logger.info("saveProduct called");
-		ProductValidator productValidator = new ProductValidator();
-		productValidator.validate(product, bindingResult);
 		if (bindingResult.hasErrors()) {
 			FieldError fieldError = bindingResult.getFieldError();
 			logger.info("Code:" + fieldError.getCode() + ", field:" + fieldError.getField());
